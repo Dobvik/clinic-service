@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Пациенты{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><h1>Пациенты</h1><p class="subtitle">Контактные данные, история посещений и результаты исследований.</p></div>
+  <a class="button button-primary" href="/patients/new">+ Новый пациент</a>
+</div>
+<section class="panel" aria-labelledby="patients-heading">
+  <div class="panel-heading"><h2 id="patients-heading">Список пациентов <span class="count">{{ patients | length }}</span></h2><span class="muted small">По алфавиту</span></div>
+  {% if patients %}
+  <div class="table-scroll"><table>
+    <caption class="sr-only">Пациенты</caption>
+    <thead><tr><th scope="col">Пациент</th><th scope="col">Дата рождения</th><th scope="col">Телефон</th><th scope="col"><span class="sr-only">Медицинская карта</span></th></tr></thead>
+    <tbody>{% for patient in patients %}<tr>
+      <td><a class="strong name-link" href="/patients/{{ patient.id }}">{{ patient.full_name }}</a><span class="cell-caption">Карта №{{ '%04d' | format(patient.id) }}</span></td>
+      <td class="nowrap">{{ patient.birth_date.strftime('%d.%m.%Y') }}</td>
+      <td class="muted nowrap">{{ patient.phone or 'Не указан' }}</td>
+      <td class="action-cell"><a class="text-link" href="/patients/{{ patient.id }}">Открыть карту →</a></td>
+    </tr>{% endfor %}</tbody>
+  </table></div>
+  {% else %}<div class="empty-state"><h3>Пациентов пока нет</h3><p>Добавьте первого пациента, чтобы записать его на приём.</p><a class="button button-primary" href="/patients/new">Добавить пациента</a></div>{% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Запись на приём{% endblock %}
+{% block content %}
+<a class="back-link" href="/?clinic_id={{ slot.clinic_id }}&amp;date={{ slot.starts_at | local_day }}">← К расписанию поликлиники</a>
+<div class="page-heading"><div><h1>Запись на приём</h1><p class="subtitle">Выберите пациента и подтвердите запись.</p></div></div>
+<div class="detail-layout">
+  <section class="panel form-panel" aria-labelledby="booking-heading">
+    <h2 id="booking-heading">Пациент</h2>
+    {% if error %}<div class="alert alert-error spaced" role="alert">{{ error }}</div>{% endif %}
+    {% if not slot.is_available %}
+      <div class="empty-state compact"><h3>Это время уже недоступно</h3><p>Приём занят или время его начала прошло.</p><a class="button button-primary" href="/?clinic_id={{ slot.clinic_id }}">Выбрать другое время</a></div>
+    {% elif patients %}
+      <form action="/appointments" method="post" class="spaced">
+        <input type="hidden" name="slot_id" value="{{ slot.id }}">
+        <div class="field"><label for="patient_id">Медицинская карта <span class="required">*</span></label>
+          <select id="patient_id" name="patient_id" required {% if error %}aria-invalid="true"{% endif %}>
+            <option value="">Выберите пациента</option>
+            {% for patient in patients %}<option value="{{ patient.id }}" {% if values.get('patient_id') == patient.id | string %}selected{% endif %}>{{ patient.full_name }} · {{ patient.birth_date.strftime('%d.%m.%Y') }} · №{{ patient.id }}</option>{% endfor %}
+          </select>
+          <p class="field-hint">Нет в списке? <a href="/patients/new">Добавьте нового пациента</a>, затем вернитесь к расписанию.</p>
+        </div>
+        <div class="form-actions"><button class="button button-primary" type="submit">Подтвердить запись</button></div>
+      </form>
+    {% else %}<div class="empty-state compact"><h3>Сначала добавьте пациента</h3><p>Для записи нужна медицинская карта.</p><a class="button button-primary" href="/patients/new">Добавить пациента</a></div>{% endif %}
+  </section>
+  <aside class="panel summary-panel"><p class="eyebrow">Выбранный приём</p><p class="appointment-time">{{ slot.starts_at | local_time }} <span>— {{ slot.ends_at | local_time }}</span></p><p class="muted">{{ slot.starts_at | local_datetime }}</p><hr><h2>{{ slot.doctor_name }}</h2><p class="muted">{{ slot.specialty }}</p><hr><p class="strong">{{ slot.clinic_name }}</p><p class="small muted">Московское время (UTC+3)</p></aside>
+</div>
+{% endblock %}

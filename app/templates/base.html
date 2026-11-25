@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>{% block title %}Расписание{% endblock %} · Поликлиника</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">К содержимому</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="/" aria-label="Поликлиника — расписание">
+          <span class="brand-mark" aria-hidden="true">+</span>
+          <span>Поликлиника<span class="brand-caption">Информационная система</span></span>
+        </a>
+        <nav aria-label="Главное меню">
+          <a href="/" {% if nav == 'schedule' %}aria-current="page"{% endif %}>Расписание</a>
+          <a href="/appointments" {% if nav == 'appointments' %}aria-current="page"{% endif %}>Приёмы</a>
+          <a href="/patients" {% if nav == 'patients' %}aria-current="page"{% endif %}>Пациенты</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="container">
+      {% block content %}{% endblock %}
+    </main>
+    <footer class="site-footer container">
+      <span>Поликлиника <span class="separator">/</span> Все данные вымышлены</span>
+      <span>Время приёмов — московское (UTC+3)</span>
+    </footer>
+  </body>
+</html>

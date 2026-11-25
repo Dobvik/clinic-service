@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{{ patient.full_name }}{% endblock %}
+{% block content %}
+<a class="back-link" href="/patients">← Все пациенты</a>
+<div class="page-heading"><div><p class="eyebrow">Медицинская карта №{{ '%04d' | format(patient.id) }}</p><h1 class="patient-title">{{ patient.full_name }}</h1><p class="subtitle">Дата рождения: {{ patient.birth_date.strftime('%d.%m.%Y') }} <span class="separator">/</span> {{ patient.phone or 'Телефон не указан' }}</p></div><a class="button button-primary" href="/">Записать на приём</a></div>
+{% if notice %}<div class="alert alert-success" role="status">{{ notice }}</div>{% endif %}
+<div class="stack">
+  <section class="panel" aria-labelledby="visits-heading"><div class="panel-heading"><h2 id="visits-heading">История посещений <span class="count">{{ appointments | length }}</span></h2></div>
+    {% if appointments %}{% set show_patient = false %}{% include '_appointments_table.html' %}
+    {% else %}<div class="empty-state compact"><h3>Посещений пока нет</h3><p>Здесь появятся записи пациента во всех поликлиниках сети.</p></div>{% endif %}
+  </section>
+  {% for appointment in appointments if appointment.status == appointment_status.COMPLETED %}
+  <section class="panel form-panel" aria-label="Итоги приёма {{ appointment.starts_at | local_datetime }}"><p class="eyebrow">Завершённый приём</p><h2><a class="name-link" href="/appointments/{{ appointment.id }}">{{ appointment.starts_at | local_datetime }} · {{ appointment.specialty }}</a></h2><p class="small muted">{{ appointment.doctor_name }} · {{ appointment.clinic_name }}</p><p class="clinical-note">{{ appointment.note }}</p></section>
+  {% endfor %}
+  <section class="panel" aria-labelledby="labs-heading"><div class="panel-heading"><h2 id="labs-heading">Лабораторные исследования <span class="count">{{ lab_results | length }}</span></h2></div>
+    {% for lab in lab_results %}<article class="lab-result"><div class="lab-heading"><h3>{{ lab.study_name }}</h3><span class="small muted nowrap">{{ lab.received_at | local_datetime }}</span></div><p class="clinical-note">{{ lab.result }}</p></article>
+    {% else %}<div class="empty-state compact"><h3>Результатов пока нет</h3><p>У этого пациента нет лабораторных исследований.</p></div>{% endfor %}
+  </section>
+</div>
+{% endblock %}

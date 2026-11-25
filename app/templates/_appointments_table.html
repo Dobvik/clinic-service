@@ -1,0 +1,11 @@
+<div class="table-scroll"><table>
+  <caption class="sr-only">Записи на приём</caption>
+  <thead><tr><th scope="col">Дата и время</th>{% if show_patient %}<th scope="col">Пациент</th>{% endif %}<th scope="col">Врач и поликлиника</th><th scope="col">Статус</th><th scope="col"><span class="sr-only">Действие</span></th></tr></thead>
+  <tbody>{% for appointment in appointments %}<tr>
+    <td class="nowrap"><a class="name-link strong" href="/appointments/{{ appointment.id }}">{{ appointment.starts_at | local_datetime }}</a><span class="cell-caption">Приём №{{ '%04d' | format(appointment.id) }}</span></td>
+    {% if show_patient %}<td><a class="name-link" href="/patients/{{ appointment.patient_id }}">{{ appointment.patient_name }}</a></td>{% endif %}
+    <td><span class="strong">{{ appointment.doctor_name }}</span><span class="cell-caption">{{ appointment.specialty }} · {{ appointment.clinic_name }}</span></td>
+    <td><span class="badge badge-{{ appointment.status.value }}">{{ appointment.status.label }}</span></td>
+    <td class="action-cell"><a class="text-link" href="/appointments/{{ appointment.id }}">Открыть →</a></td>
+  </tr>{% endfor %}</tbody>
+</table></div>

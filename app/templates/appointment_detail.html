@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Приём №{{ appointment.id }}{% endblock %}
+{% block content %}
+<a class="back-link" href="/appointments">← Журнал приёмов</a>
+<div class="page-heading"><div><p class="eyebrow">Приём №{{ '%04d' | format(appointment.id) }}</p><h1>{{ appointment.starts_at | local_datetime }}</h1><p class="subtitle">{{ appointment.clinic_name }} · {{ appointment.specialty }}</p></div><span class="badge badge-large badge-{{ appointment.status.value }}">{{ appointment.status.label }}</span></div>
+{% if notice %}<div class="alert alert-success" role="status">{{ notice }}</div>{% endif %}
+{% if error %}<div class="alert alert-error" role="alert">{{ error }}</div>{% endif %}
+<div class="detail-layout">
+  <div class="stack">
+    <section class="panel form-panel" aria-labelledby="participants-heading"><h2 id="participants-heading">Информация о приёме</h2><dl class="details"><div><dt>Пациент</dt><dd><a href="/patients/{{ appointment.patient_id }}">{{ appointment.patient_name }}</a></dd></div><div><dt>Врач</dt><dd>{{ appointment.doctor_name }}<span class="cell-caption">{{ appointment.specialty }}</span></dd></div><div><dt>Время</dt><dd>{{ appointment.starts_at | local_time }} — {{ appointment.ends_at | local_time }} (МСК)</dd></div><div><dt>Запись создана</dt><dd>{{ appointment.created_at | local_datetime }}</dd></div></dl></section>
+    <section class="panel form-panel" aria-labelledby="note-heading">
+      <h2 id="note-heading">Запись в медицинской карте</h2>
+      {% if appointment.status == appointment_status.COMPLETED %}<p class="clinical-note">{{ appointment.note }}</p><p class="small muted">Сохранено {{ appointment.completed_at | local_datetime }}</p>
+      {% elif appointment.status == appointment_status.CANCELLED %}<p class="muted spaced">Приём отменён. Медицинская запись не создавалась.</p>
+      {% elif can_complete %}
+        <form action="/appointments/{{ appointment.id }}/complete" method="post" class="spaced"><div class="field"><label for="note">Итоги приёма <span class="required">*</span></label><textarea id="note" name="note" rows="6" maxlength="{{ note_max_length }}" required {% if error %}aria-invalid="true"{% endif %}>{{ note }}</textarea><p class="field-hint">После завершения заметка появится в истории посещений пациента.</p></div><button class="button button-primary" type="submit">Сохранить и завершить приём</button></form>
+      {% else %}<p class="muted spaced">Завершить приём и внести заметку можно после его начала.</p>{% endif %}
+    </section>
+  </div>
+  <aside class="panel summary-panel"><p class="eyebrow">Действия</p><a class="button button-secondary full-width" href="/patients/{{ appointment.patient_id }}">Медицинская карта →</a>
+    {% if appointment.status == appointment_status.SCHEDULED %}<hr><h2>Отмена записи</h2><p class="small muted">Освободит время для другого пациента. Запись останется в истории.</p><form action="/appointments/{{ appointment.id }}/cancel" method="post"><button class="button button-danger full-width" type="submit">Отменить запись</button></form>{% endif %}
+  </aside>
+</div>
+{% endblock %}

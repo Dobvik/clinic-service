@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Приёмы{% endblock %}
+{% block content %}
+<div class="page-heading"><div><h1>Приёмы</h1><p class="subtitle">Запланированные, завершённые и отменённые приёмы всей сети.</p></div><a class="button button-primary" href="/">Записать пациента</a></div>
+<section class="panel" aria-labelledby="appointments-heading">
+  <div class="panel-heading"><h2 id="appointments-heading">Журнал приёмов <span class="count">{{ appointments | length }}</span></h2><span class="small muted">От поздних дат к ранним</span></div>
+  {% if appointments %}{% set show_patient = true %}{% include '_appointments_table.html' %}
+  {% else %}<div class="empty-state"><h3>Записей пока нет</h3><p>Выберите свободное время в расписании и запишите пациента.</p><a class="button button-primary" href="/">Открыть расписание</a></div>{% endif %}
+</section>
+{% endblock %}

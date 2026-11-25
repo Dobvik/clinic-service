@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Новый пациент{% endblock %}
+{% block content %}
+<a class="back-link" href="/patients">← Все пациенты</a>
+<div class="page-heading"><div><h1>Новый пациент</h1><p class="subtitle">После сохранения будет создана медицинская карта.</p></div></div>
+<div class="detail-layout">
+  <form class="panel form-panel" action="/patients" method="post">
+    {% if errors %}<div class="alert alert-error" role="alert">Проверьте отмеченные поля. Введённые данные сохранены в форме.</div>{% endif %}
+    <div class="field">
+      <label for="full_name">Фамилия, имя и отчество <span class="required">*</span></label>
+      <input id="full_name" name="full_name" value="{{ values.get('full_name', '') }}" maxlength="{{ name_max_length }}" autocomplete="name" required {% if errors.get('full_name') %}aria-invalid="true" aria-describedby="full_name-error"{% endif %}>
+      {% if errors.get('full_name') %}<p class="field-error" id="full_name-error">{{ errors.full_name }}</p>{% endif %}
+    </div>
+    <div class="form-row">
+      <div class="field">
+        <label for="birth_date">Дата рождения <span class="required">*</span></label>
+        <input id="birth_date" name="birth_date" type="date" value="{{ values.get('birth_date', '') }}" max="{{ today.isoformat() }}" autocomplete="bday" required {% if errors.get('birth_date') %}aria-invalid="true" aria-describedby="birth_date-error"{% endif %}>
+        {% if errors.get('birth_date') %}<p class="field-error" id="birth_date-error">{{ errors.birth_date }}</p>{% endif %}
+      </div>
+      <div class="field">
+        <label for="phone">Телефон <span class="optional">необязательно</span></label>
+        <input id="phone" name="phone" type="tel" value="{{ values.get('phone', '') }}" maxlength="30" placeholder="+7 (900) 000-00-00" autocomplete="tel" {% if errors.get('phone') %}aria-invalid="true" aria-describedby="phone-error"{% endif %}>
+        {% if errors.get('phone') %}<p class="field-error" id="phone-error">{{ errors.phone }}</p>{% endif %}
+      </div>
+    </div>
+    <div class="form-actions"><button class="button button-primary" type="submit">Создать медицинскую карту</button><a class="button button-secondary" href="/patients">Отмена</a></div>
+  </form>
+  <aside class="help-panel"><p>Обязательные поля отмечены звёздочкой. Используйте вымышленные данные.</p></aside>
+</div>
+{% endblock %}
