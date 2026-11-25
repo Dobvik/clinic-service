@@ -69,23 +69,23 @@
 
 ### Выбор поликлиники
 
-![Выбор поликлиники](docs/pr/screenshots/01-clinic-selection.png)
+![Выбор поликлиники](https://raw.githubusercontent.com/Dobvik/clinic-service/Features/docs/pr/screenshots/01-clinic-selection.png)
 
 ### Форма создания расписания
 
-![Форма создания расписания](docs/pr/screenshots/02-schedule-form.png)
+![Форма создания расписания](https://raw.githubusercontent.com/Dobvik/clinic-service/Features/docs/pr/screenshots/02-schedule-form.png)
 
 ### Ошибка формы
 
-![Ошибка формы](docs/pr/screenshots/03-validation-error.png)
+![Ошибка формы](https://raw.githubusercontent.com/Dobvik/clinic-service/Features/docs/pr/screenshots/03-validation-error.png)
 
 ### Слоты появились в расписании
 
-![Слоты в расписании](docs/pr/screenshots/04-slots-created.png)
+![Слоты в расписании](https://raw.githubusercontent.com/Dobvik/clinic-service/Features/docs/pr/screenshots/04-slots-created.png)
 
 ### Конфликт с существующими слотами
 
-![Конфликт слотов](docs/pr/screenshots/05-conflict-error.png)
+![Конфликт слотов](https://raw.githubusercontent.com/Dobvik/clinic-service/Features/docs/pr/screenshots/05-conflict-error.png)
 
 ## Как запустить
 
@@ -98,4 +98,4 @@
 ## Промпты
 
 Промпты, с которыми выполнялась задача, и выбранные уточнения — в
-[`docs/pr/prompts.md`](docs/pr/prompts.md).
+[`docs/pr/prompts.md`](https://github.com/Dobvik/clinic-service/blob/Features/docs/pr/prompts.md).
